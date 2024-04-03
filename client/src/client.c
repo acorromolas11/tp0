@@ -25,9 +25,15 @@ int main(void)
 
 	config = iniciar_config();
 
+	ip = config_get_string_value(config,"IP");
+	puerto = config_get_string_value(config,"PUERTO");
+	valor = config_get_string_value(config,"CLAVE");
+
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
 	// Loggeamos el valor de config
+
+	log_info(logger,"Su clave es: %s",valor);
 
 
 	/* ---------------- LEER DE CONSOLA ---------------- */
@@ -65,8 +71,8 @@ t_config* iniciar_config(void)
 {
 	t_config* nuevo_config;
 
-	nuevo_config = config_create(getcwd(NULL,0));
-
+	nuevo_config = config_create("cliente.config");
+	
 	if(nuevo_config == NULL){
 		perror("No se pudo crear el config");
 	}
@@ -81,7 +87,16 @@ void leer_consola(t_log* logger)
 	// La primera te la dejo de yapa
 	leido = readline("> ");
 
+	log_info(logger,">> %s",leido);
+
 	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
+
+	leido = readline("> ");
+	
+	while (strcmp(leido,"")!=0){
+		log_info(logger,">> %s",leido);
+		leido = readline("> ");
+	}
 
 	// ¡No te olvides de liberar las lineas antes de regresar!
 
